@@ -1,22 +1,38 @@
-import 'package:ecommerce_online_c11/features/auth/data/data_source/remote/auth_remote_ds.dart';
-import 'package:ecommerce_online_c11/features/auth/domain/entity/sign_up_entity.dart';
+import 'package:dartz/dartz.dart';
+import 'package:ecommerce_online_c11/core/exceptions/failuers.dart';
+import 'package:ecommerce_online_c11/features/auth/data/dataSources/remote/auth_remote_ds.dart';
+import 'package:ecommerce_online_c11/features/auth/domain/entity/signUp_data.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/repository/auth_repo.dart';
 
-class AuthRepoImpl implements AuthRepo{
-  AuthRemoteDs authRemoteDs;
+class AuthRepoImpl implements AuthRepo {
+  AuthRemoteDS authRemoteDS;
 
-  AuthRepoImpl(this.authRemoteDs);
-  @override
-  Future<bool> signIn(String email, String password) {
-
-   return authRemoteDs.signIn(email, password);
-  }
+  AuthRepoImpl(this.authRemoteDS);
 
   @override
-  Future<bool> signUp(SignUpEntity signUpEntity) {
-    // TODO: implement signUp
+  Future<bool> forgetPassword() {
+    // TODO: implement forgetPassword
     throw UnimplementedError();
   }
 
+  @override
+  Future<Either<RouteFailures, bool>> login(
+      String email, String password) async {
+    try {
+      bool loggedIn = await authRemoteDS.login(email, password);
+      return Right(loggedIn);
+    } catch (e) {
+      return Left(RemoteFailures(e.toString()));
+    }
+  }
 
+  @override
+  Future<bool> signUp(SignUpDataEntity entity) async {
+    try {
+      bool loggedIn = await authRemoteDS.signUp(entity);
+      return loggedIn;
+    } catch (e) {
+      return false;
+    }
+  }
 }
