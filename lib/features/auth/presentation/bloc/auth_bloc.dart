@@ -1,34 +1,30 @@
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce_online_c11/core/utils/enums.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/login_usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthLoginState> {
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
   LoginUseCase loginUseCase;
-  AuthBloc(this.loginUseCase) : super(AuthLoginInit()) {
-    on<AuthEvent>((event, emit) {});
 
+  AuthBloc(this.loginUseCase) : super(AuthInitial()) {
     on<LoginEvent>((event, emit) async {
-      state.copyWith(requestState: RequestState.loading);
-      bool loggedIn = await loginUseCase.call(event.email, event.password);
+      emit(state.copyWith(requestState: RequestState.loading));
+      var data = await loginUseCase.call(event.email, event.password);
 
-      print(loggedIn);
-      print(loggedIn);
-      print(loggedIn);
-      if (loggedIn) {
-        state.copyWith(
-          loggedIn: true,
-          requestState: RequestState.success,
-        );
-      } else {
-        state.copyWith(
-          loggedIn: false,
-          requestState: RequestState.error,
-          errorMessage: "Something went wrong",
-        );
-      }
+      data.fold(
+        (l) {
+          emit(state.copyWith(
+              requestState: RequestState.error,
+              errorMessage: "Something went wrong"));
+        },
+        (r) {
+          emit(state.copyWith(requestState: RequestState.success, loggedIn: r));
+        },
+      );
     });
   }
 }

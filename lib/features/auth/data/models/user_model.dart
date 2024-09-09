@@ -1,4 +1,6 @@
-class UserModel {
+import 'package:equatable/equatable.dart';
+
+class UserModel extends Equatable {
   String? message;
   User? user;
   String? token;
@@ -20,6 +22,9 @@ class UserModel {
     data['token'] = this.token;
     return data;
   }
+
+  @override
+  List<Object?> get props => [message, user, token];
 }
 
 class User {

@@ -1,25 +1,23 @@
 part of 'auth_bloc.dart';
 
-
-class AuthLoginState {
+class AuthState {
   RequestState? requestState;
   bool? loggedIn;
   String? errorMessage;
-  AuthLoginState({this.requestState, this.loggedIn, this.errorMessage});
 
-  AuthLoginState copyWith(
+  AuthState({this.requestState, this.loggedIn, this.errorMessage});
+
+  AuthState copyWith(
       {RequestState? requestState, bool? loggedIn, String? errorMessage}) {
-    return AuthLoginState(
+    return AuthState(
         requestState: requestState ?? this.requestState,
         loggedIn: loggedIn ?? this.loggedIn,
         errorMessage: errorMessage ?? this.errorMessage);
   }
 }
 
-class AuthLoginInit extends AuthLoginState {
-  AuthLoginInit()
+final class AuthInitial extends AuthState {
+  AuthInitial()
       : super(
-            requestState: RequestState.init, loggedIn: false, errorMessage: "");
+            requestState: RequestState.init, errorMessage: "", loggedIn: false);
 }
-
-enum RequestState { init, loading, success, error }
