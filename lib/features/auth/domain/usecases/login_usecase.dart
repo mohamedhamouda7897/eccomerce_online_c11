@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:ecommerce_online_c11/core/exceptions/failuers.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/repository/auth_repo.dart';
 
 class LoginUseCase {
@@ -5,6 +7,6 @@ class LoginUseCase {
 
   LoginUseCase(this.repo);
 
-  Future<bool> call(String email, String password) =>
+  Future<Either<RouteFailures,bool>> call(String email, String password) =>
       repo.signIn(email, password);
 }

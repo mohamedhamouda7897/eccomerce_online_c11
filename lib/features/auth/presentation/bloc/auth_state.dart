@@ -22,4 +22,4 @@ class AuthLoginInit extends AuthLoginState {
             requestState: RequestState.init, loggedIn: false, errorMessage: "");
 }
 
-enum RequestState { init, loading, success, error }
+

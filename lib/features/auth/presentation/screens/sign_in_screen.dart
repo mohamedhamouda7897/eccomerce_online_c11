@@ -1,15 +1,18 @@
 import 'package:ecommerce_online_c11/config/routes_manager/routes.dart';
+import 'package:ecommerce_online_c11/core/api/api_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/assets_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/color_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/components/custom_elevated_button.dart';
 import 'package:ecommerce_online_c11/core/utils/components/main_text_field.dart';
 import 'package:ecommerce_online_c11/core/utils/components/validators.dart';
+import 'package:ecommerce_online_c11/core/utils/enums.dart';
 import 'package:ecommerce_online_c11/core/utils/font_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/styles_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
 import 'package:ecommerce_online_c11/features/auth/data/data_source/remote/auth_remote_ds_impl.dart';
 import 'package:ecommerce_online_c11/features/auth/data/repository/auth_repo_impl.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/login_usecase.dart';
+import 'package:ecommerce_online_c11/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:ecommerce_online_c11/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,16 +24,25 @@ class SignInScreen extends StatelessWidget {
 
   TextEditingController emailContoller = TextEditingController();
   TextEditingController passwordContoller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthBloc(
-        LoginUseCase(
-          AuthRepoImpl(
-            AuthRemoteDsImpl(),
+          LoginUseCase(
+            AuthRepoImpl(
+              AuthRemoteDsImpl(
+                ApiManager(),
+              ),
+            ),
           ),
-        ),
-      ),
+          SignUpUseCase(
+            AuthRepoImpl(
+              AuthRemoteDsImpl(
+                ApiManager(),
+              ),
+            ),
+          )),
       child: BlocConsumer<AuthBloc, AuthLoginState>(
         listener: (context, state) {
           print(state.requestState);
@@ -40,11 +52,14 @@ class SignInScreen extends StatelessWidget {
                 context, Routes.mainRoute, (r) => false);
           }
 
-          if (state.loggedIn ==true) {
-            print("navigate ");
-
-            Navigator.pushNamedAndRemoveUntil(
-                context, Routes.mainRoute, (r) => false);
+          if (state.requestState == RequestState.error) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text("Error"),
+                content: Text(state.errorMessage ?? ""),
+              ),
+            );
           }
         },
         builder: (context, state) {
