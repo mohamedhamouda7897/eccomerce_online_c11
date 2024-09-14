@@ -14,6 +14,7 @@ import 'package:ecommerce_online_c11/features/auth/data/repository/auth_repo_imp
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/login_usecase.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/singup_usecase.dart';
 import 'package:ecommerce_online_c11/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:ecommerce_online_c11/injectable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,21 +29,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(
-          LoginUseCase(
-            AuthRepoImpl(
-              AuthRemoteDSImpl(
-                ApiManager(),
-              ),
-            ),
-          ),
-          SignUpUseCase(
-            AuthRepoImpl(
-              AuthRemoteDSImpl(
-                ApiManager(),
-              ),
-            ),
-          )),
+      create: (context) => getIt<AuthBloc>(),
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state.requestState == RequestState.success) {

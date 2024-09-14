@@ -4,12 +4,15 @@ import 'package:ecommerce_online_c11/core/utils/font_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/styles_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
 import 'package:ecommerce_online_c11/features/main_layout/categories/presentation/widgets/category_card_item.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/data/models/category_Model.dart';
 import 'package:flutter/material.dart';
 
 import 'sub_category_item.dart';
 
 class SubCategoriesList extends StatelessWidget {
-  const SubCategoriesList({super.key});
+  CategoryModel? subCategory;
+
+  SubCategoriesList({this.subCategory, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +36,17 @@ class SubCategoriesList extends StatelessWidget {
           // the grid view of the subcategories
           SliverGrid(
               delegate: SliverChildBuilderDelegate(
-                childCount: 26,
+                childCount: subCategory?.data?.length ?? 0,
                 (context, index) => SubCategoryItem(
-                    'Watches',
-                    ImageAssets.subcategoryCardImage,
-                    goToCategoryProductsListScreen),
+                  subCategory?.data?[index].name ?? "",
+                  ImageAssets.subcategoryCardImage,
+                  goToCategoryProductsListScreen,
+                  subCategory?.data?[index].sId ?? "",
+                ),
               ),
-              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                childAspectRatio: 0.75,
+                childAspectRatio: 0.65,
                 mainAxisSpacing: AppSize.s8,
                 crossAxisSpacing: AppSize.s8,
               ))

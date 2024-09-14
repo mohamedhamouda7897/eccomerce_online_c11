@@ -3,12 +3,14 @@ import 'package:ecommerce_online_c11/core/utils/enums.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/entity/signUp_data.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/login_usecase.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/singup_usecase.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_event.dart';
 
 part 'auth_state.dart';
 
+@injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   LoginUseCase loginUseCase;
   SignUpUseCase signUpUseCase;

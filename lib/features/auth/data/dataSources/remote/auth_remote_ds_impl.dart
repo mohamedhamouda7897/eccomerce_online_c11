@@ -2,9 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_online_c11/core/api/api_manager.dart';
 import 'package:ecommerce_online_c11/core/api/end_points.dart';
 import 'package:ecommerce_online_c11/core/api/status_codes.dart';
+import 'package:ecommerce_online_c11/core/cache/shared_pref.dart';
 import 'package:ecommerce_online_c11/features/auth/data/dataSources/remote/auth_remote_ds.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/entity/signUp_data.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+@Injectable(as: AuthRemoteDS)
 class AuthRemoteDSImpl implements AuthRemoteDS {
   ApiManager apiManager;
 
@@ -21,6 +25,8 @@ class AuthRemoteDSImpl implements AuthRemoteDS {
     );
 
     print(response.data);
+    await SharedPreferencesService.setValue<String>(
+        "token", response.data['token']);
     if (response.statusCode == StatusCodes.success) {
       return true;
     } else {
