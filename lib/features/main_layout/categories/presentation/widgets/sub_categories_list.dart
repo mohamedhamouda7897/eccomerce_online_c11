@@ -1,15 +1,21 @@
+import 'package:ecommerce_online_c11/config/routes_manager/routes.dart';
 import 'package:ecommerce_online_c11/core/utils/assets_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/color_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/font_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/styles_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
 import 'package:ecommerce_online_c11/features/main_layout/categories/presentation/widgets/category_card_item.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/data/models/CategoryModel.dart';
 import 'package:flutter/material.dart';
 
 import 'sub_category_item.dart';
 
 class SubCategoriesList extends StatelessWidget {
-  const SubCategoriesList({super.key});
+  CategoryModel? subCategories;
+  String catId;
+
+  SubCategoriesList(
+      {required this.subCategories, required this.catId, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +39,19 @@ class SubCategoriesList extends StatelessWidget {
           // the grid view of the subcategories
           SliverGrid(
               delegate: SliverChildBuilderDelegate(
-                childCount: 26,
-                (context, index) => SubCategoryItem(
-                    'Watches',
+                childCount: subCategories?.data?.length ?? 0,
+                (context, index) => InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.productsScreenRoute,
+                        arguments: catId);
+                  },
+                  child: SubCategoryItem(
+                    subCategories?.data?[index].name ?? "",
                     ImageAssets.subcategoryCardImage,
-                    goToCategoryProductsListScreen),
+                  ),
+                ),
               ),
-              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 0.75,
                 mainAxisSpacing: AppSize.s8,
@@ -50,7 +62,5 @@ class SubCategoriesList extends StatelessWidget {
     );
   }
 
-  goToCategoryProductsListScreen() {
-    // todo implement this function
-  }
+  goToCategoryProductsListScreen(BuildContext c) {}
 }

@@ -27,8 +27,13 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<bool> signUp(SignUpDataEntity entity) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+  Future<Either<RouteFailures, bool>> signUp(SignUpDataEntity entity) async {
+    try {
+      bool loggedIn = await authRemoteDS.signUp(entity);
+
+      return Right(loggedIn);
+    } catch (e) {
+      return Left(RemoteFailures(e.toString()));
+    }
   }
 }

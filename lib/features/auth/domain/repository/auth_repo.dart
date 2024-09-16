@@ -7,5 +7,5 @@ abstract class AuthRepo {
 
   void forgetPassword();
 
-  Future<bool> signUp(SignUpDataEntity entity);
+  Future<Either<RouteFailures,bool>> signUp(SignUpDataEntity entity);
 }

@@ -1,19 +1,21 @@
 import 'package:ecommerce_online_c11/core/utils/color_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
+import 'package:ecommerce_online_c11/features/main_layout/categories/presentation/bloc/category_tab_bloc.dart';
 import 'package:ecommerce_online_c11/features/main_layout/categories/presentation/widgets/category_item.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/data/models/CategoryModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesList extends StatefulWidget {
-  const CategoriesList({super.key});
+  CategoryModel? categoryModel;
+
+  CategoriesList({super.key, required this.categoryModel});
 
   @override
   State<CategoriesList> createState() => _CategoriesListState();
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-  // Index of the currently selected category
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -45,18 +47,22 @@ class _CategoriesListState extends State<CategoriesList> {
           bottomLeft: Radius.circular(AppSize.s12),
         ),
         child: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (context, index) => CategoryItem(index,
-              "Laptops & Electronics", selectedIndex == index, onItemClick),
+          itemCount: widget.categoryModel?.data?.length ?? 0,
+          itemBuilder: (context, index) => CategoryItem(
+              index,
+              widget.categoryModel?.data?[index].name ?? "",
+              BlocProvider.of<CategoryTabBloc>(context).state.selectedCategoryIndex == index,
+              onItemClick),
         ),
       ),
     ));
   }
 
   // callback function to change the selected index
-  onItemClick(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+  onItemClick(int index ) {
+    BlocProvider.of<CategoryTabBloc>(context)
+        .add(ChangeSelectedCategoryEvent(index));
+    BlocProvider.of<CategoryTabBloc>(context).add(
+        GetSubCategoriesEvent(widget.categoryModel?.data?[index].id ?? ""));
   }
 }

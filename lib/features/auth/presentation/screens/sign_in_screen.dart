@@ -12,6 +12,7 @@ import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
 import 'package:ecommerce_online_c11/features/auth/data/dataSource/remote/auth_remote_ds_impl.dart';
 import 'package:ecommerce_online_c11/features/auth/data/repository/auth_repo_impl.dart';
 import 'package:ecommerce_online_c11/features/auth/domain/usecases/login_usecase.dart';
+import 'package:ecommerce_online_c11/features/auth/domain/usecases/signup_usecase.dart';
 import 'package:ecommerce_online_c11/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,13 @@ class SignInScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthBloc(
         LoginUseCase(
+          AuthRepoImpl(
+            AuthRemoteDSImpl(
+              ApiManager(),
+            ),
+          ),
+        ),
+        SignUpUseCase(
           AuthRepoImpl(
             AuthRemoteDSImpl(
               ApiManager(),

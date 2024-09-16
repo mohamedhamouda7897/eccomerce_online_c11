@@ -8,3 +8,9 @@ class LoginEvent extends AuthEvent {
 
   LoginEvent(this.email, this.password);
 }
+
+class SignUpEvent extends AuthEvent {
+  SignUpDataEntity entity;
+
+  SignUpEvent(this.entity);
+}
