@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:ecommerce_online_c11/core/api/api_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/assets_manager.dart';
-import 'package:ecommerce_online_c11/features/main_layout/categories/data/dataSource/category_ds_impl.dart';
-import 'package:ecommerce_online_c11/features/main_layout/categories/data/repository/category_repo_impl.dart';
-import 'package:ecommerce_online_c11/features/main_layout/categories/domain/usecases/get_category_usecase.dart';
-import 'package:ecommerce_online_c11/features/main_layout/categories/presentation/bloc/category_bloc.dart';
+import 'package:ecommerce_online_c11/di.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/data/dataSource/category_ds_impl.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/data/repository/category_repo_impl.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/domain/usecases/get_category_usecase.dart';
+import 'package:ecommerce_online_c11/features/main_layout/home/presentation/bloc/category_bloc.dart';
 import 'package:ecommerce_online_c11/features/main_layout/home/presentation/widgets/custom_category_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,16 +54,8 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CategoryBloc(
-        GetCategoryUseCase(
-          CategoryRepoImpl(
-            CategoryDSImpl(
-              ApiManager(),
-            ),
-          ),
-        ),
-      )..add(GetCategoryEvent()),
-      child: BlocConsumer<CategoryBloc, CategoryState>(
+      create: (context) => getIt<HomeBloc>()..add(GetCategoryEvent()),
+      child: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
           // TODO: implement listener
         },
