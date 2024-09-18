@@ -1,3 +1,4 @@
+import 'package:ecommerce_online_c11/config/routes_manager/routes.dart';
 import 'package:ecommerce_online_c11/core/utils/assets_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/components/home_screen_app_bar.dart';
 import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
@@ -43,19 +44,25 @@ class ProductsScreen extends StatelessWidget {
                         childAspectRatio: 7 / 10,
                       ),
                       itemBuilder: (context, index) {
-                        return CustomProductWidget(
-                          image: state.productModel?.data?[index].images?.first??"" ,
-                          title: state.productModel?.data?[index].title ?? "",
-                          price: state.productModel?.data?[index].price
-                                  ?.toDouble() ??
-                              0,
-                          rating: 4.7,
-                          discountPercentage: 10,
-                          height: height,
-                          width: width,
-                          description:
-                              state.productModel?.data?[index].description ??
-                                  "",
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.productDetails,
+                            arguments: state.productModel?.data?[index]);
+                          },
+                          child: CustomProductWidget(
+                            image: state.productModel?.data?[index].images?.first??"" ,
+                            title: state.productModel?.data?[index].title ?? "",
+                            price: state.productModel?.data?[index].price
+                                    ?.toDouble() ??
+                                0,
+                            rating: 4.7,
+                            discountPercentage: 10,
+                            height: height,
+                            width: width,
+                            description:
+                                state.productModel?.data?[index].description ??
+                                    "",
+                          ),
                         );
                       },
                       scrollDirection: Axis.vertical,

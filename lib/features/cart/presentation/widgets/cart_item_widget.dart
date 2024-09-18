@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_online_c11/config/routes_manager/routes.dart';
 import 'package:ecommerce_online_c11/core/utils/assets_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/color_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/components/product_counter.dart';
 import 'package:ecommerce_online_c11/core/utils/styles_manager.dart';
 import 'package:ecommerce_online_c11/core/utils/values_manager.dart';
-import 'package:ecommerce_online_c11/features/cart/widgets/color_and_size_cart_item.dart';
+import 'package:ecommerce_online_c11/features/cart/presentation/widgets/color_and_size_cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -48,18 +49,13 @@ class CartItemWidget extends StatelessWidget {
         ),
         child: Row(children: [
           // display image in the container
-          Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.r),
-              border: Border.all(color: ColorManager.primary.withOpacity(0.3)),
-            ),
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-              height: isPortrait ? height * 0.142 : height * 0.23,
-              width: isPortrait ? width * 0.29 : 165.w,
-            ),
+          CachedNetworkImage(
+            imageUrl: imagePath,
+            fit: BoxFit.cover,
+            placeholder: (context, url) =>
+            const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) =>
+            const Icon(Icons.error),
           ),
           // SizedBox(width: 8.w),
           // display details product=========================
